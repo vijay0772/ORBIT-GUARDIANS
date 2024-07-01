@@ -37,14 +37,19 @@ async function fetchOpenAIResponse(openaiApiKey, query, additionalContext = '') 
 app.post('/api/getSuggestions', async (req, res) => {
     const { query } = req.body;
     const openaiApiKey = process.env.OPENAI_API_KEY;
+    let additionalContext = '';
 
     try {
-        const suggestion = await fetchOpenAIResponse(openaiApiKey, query);
+        const suggestion = await fetchOpenAIResponse(openaiApiKey, query, additionalContext);
         res.json({ suggestion });
     } catch (error) {
         console.error('Error fetching suggestion:', error);
         res.status(500).json({ error: 'Error processing your query', details: error.message });
     }
+});
+
+app.get('/', (req, res) => {
+    res.send('Backend is running');
 });
 
 app.listen(PORT, () => {
